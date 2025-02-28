@@ -2,7 +2,7 @@ import {parseNeptuneDomainFromHost, parseNeptuneEndpoint} from '../util.js';
 
 test('parse domain from neptune cluster host', () => {
     expect(parseNeptuneDomainFromHost('db-neptune-abc-def.cluster-xyz.us-west-2.neptune.amazonaws.com'))
-        .toBe('neptune.amazonaws.com');
+        .toBe('neptune.amazon-aws.com');
 });
 
 test('parse domain from neptune analytics host', () => {
