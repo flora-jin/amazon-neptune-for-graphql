@@ -74,11 +74,17 @@ function cleanseLabel(label) {
         .replaceAll("-", "_hy_");
 }
 
-function graphDBInferenceSchema (graphbSchema, addMutations) {
+function graphDBInferenceSchema (graphdbSchema, addMutations) {
     let r = '';
-    const gdbs = JSON.parse(graphbSchema);
+    const gdbs = JSON.parse(graphdbSchema);
 
     checkForDuplicateNames(gdbs);
+
+    // sorting direction enum
+    r += `enum SortingDirection {\n`;
+    r += '\tASC\n';
+    r += '\tDESC\n';
+    r += '}\n\n';
 
     gdbs.nodeStructures.forEach(node => {
         // map with key=node property name and value=formatted string containing property name, type and optional alias
@@ -198,6 +204,20 @@ function graphDBInferenceSchema (graphbSchema, addMutations) {
             r += formattedNodeProperties;
             r += '}\n\n';
         }
+
+        // sort input
+        r += `input ${nodeCase}Sort {\n`;
+        r += '\t_id: SortingDirection\n';
+        node.properties.forEach(property => {
+            let propertyCase = cleanseLabel(property.name);
+            if (property.name !== propertyCase) {
+                r+= `\t${propertyCase}: SortingDirection @alias(property: "${property.name}")\n`;
+            }
+            else {
+                r+= `\t${property.name}: SortingDirection\n`;
+            }
+        });
+        r += '}\n\n';
     })
 
     const nodeLabels = new Set(gdbs.nodeStructures.map((n) => n.label));
@@ -264,7 +284,7 @@ function graphDBInferenceSchema (graphbSchema, addMutations) {
     gdbs.nodeStructures.forEach(node => {
         let nodeCase = toPascalCase(cleanseLabel(node.label));
         r += `\tgetNode${nodeCase}(filter: ${nodeCase}Input): ${nodeCase}\n`;
-        r += `\tgetNode${nodeCase}s(filter: ${nodeCase}Input, options: Options): [${nodeCase}]\n`;
+        r += `\tgetNode${nodeCase}s(filter: ${nodeCase}Input, options: Options, sort: [${nodeCase}Sort!]): [${nodeCase}]\n`;
     });
     r += '}\n\n';
 

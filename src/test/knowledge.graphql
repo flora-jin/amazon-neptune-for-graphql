@@ -1,3 +1,8 @@
+enum SortingDirection {
+    ASC
+    DESC
+}
+
 type Date @alias(property:"date") {
 _id: ID! @id
 type: String
@@ -12,6 +17,12 @@ type: String
 text: String
 }
 
+input DateSort {
+    _id: SortingDirection
+    type: SortingDirection
+    text: SortingDirection
+}
+
 type Other @alias(property:"other") {
 _id: ID! @id
 type: String
@@ -24,6 +35,12 @@ input OtherInput {
 _id: ID @id
 type: String
 text: String
+}
+
+input OtherSort {
+    _id: SortingDirection
+    type: SortingDirection
+    text: SortingDirection
 }
 
 type Post @alias(property:"post") {
@@ -49,6 +66,12 @@ title: String
 post_date: String
 }
 
+input PostSort {
+    _id: SortingDirection
+    title: SortingDirection
+    post_date: SortingDirection
+}
+
 type Author @alias(property:"author") {
 _id: ID! @id
 name: String
@@ -59,6 +82,11 @@ written_by:Written_by
 input AuthorInput {
 _id: ID @id
 name: String
+}
+
+input AuthorSort {
+    _id: SortingDirection
+    name: SortingDirection
 }
 
 type Organization @alias(property:"organization") {
@@ -75,6 +103,12 @@ type: String
 text: String
 }
 
+input OrganizationSort {
+    _id: SortingDirection
+    type: SortingDirection
+    text: SortingDirection
+}
+
 type Location @alias(property:"location") {
 _id: ID! @id
 type: String
@@ -89,6 +123,12 @@ type: String
 text: String
 }
 
+input LocationSort {
+    _id: SortingDirection
+    type: SortingDirection
+    text: SortingDirection
+}
+
 type Tag @alias(property:"tag") {
 _id: ID! @id
 tag: String
@@ -99,6 +139,11 @@ tagged:Tagged
 input TagInput {
 _id: ID @id
 tag: String
+}
+
+input TagSort {
+    _id: SortingDirection
+    tag: SortingDirection
 }
 
 type Title @alias(property:"title") {
@@ -115,6 +160,12 @@ type: String
 text: String
 }
 
+input TitleSort {
+    _id: SortingDirection
+    type: SortingDirection
+    text: SortingDirection
+}
+
 type Commercial_item @alias(property:"commercial_item") {
 _id: ID! @id
 type: String
@@ -127,6 +178,12 @@ input Commercial_itemInput {
 _id: ID @id
 type: String
 text: String
+}
+
+input Commercial_itemSort {
+    _id: SortingDirection
+    type: SortingDirection
+    text: SortingDirection
 }
 
 type Tagged @alias(property:"tagged") {
@@ -152,23 +209,23 @@ limit:Int
 
 type Query {
 getNodeDate(filter: DateInput): Date
-getNodeDates(filter: DateInput, options: Options): [Date]
+getNodeDates(filter: DateInput, options: Options, sort: [DateSort!]): [Date]
 getNodeOther(filter: OtherInput): Other
-getNodeOthers(filter: OtherInput, options: Options): [Other]
+getNodeOthers(filter: OtherInput, options: Options, sort: [OtherSort!]): [Other]
 getNodePost(filter: PostInput): Post
-getNodePosts(filter: PostInput, options: Options): [Post]
+getNodePosts(filter: PostInput, options: Options, sort: [PostSort!]): [Post]
 getNodeAuthor(filter: AuthorInput): Author
-getNodeAuthors(filter: AuthorInput, options: Options): [Author]
+getNodeAuthors(filter: AuthorInput, options: Options, sort: [AuthorSort!]): [Author]
 getNodeOrganization(filter: OrganizationInput): Organization
-getNodeOrganizations(filter: OrganizationInput, options: Options): [Organization]
+getNodeOrganizations(filter: OrganizationInput, options: Options, sort: [OrganizationSort!]): [Organization]
 getNodeLocation(filter: LocationInput): Location
-getNodeLocations(filter: LocationInput, options: Options): [Location]
+getNodeLocations(filter: LocationInput, options: Options, sort: [LocationSort!]): [Location]
 getNodeTag(filter: TagInput): Tag
-getNodeTags(filter: TagInput, options: Options): [Tag]
+getNodeTags(filter: TagInput, options: Options, sort: [TagSort!]): [Tag]
 getNodeTitle(filter: TitleInput): Title
-getNodeTitles(filter: TitleInput, options: Options): [Title]
+getNodeTitles(filter: TitleInput, options: Options, sort: [TitleSort!]): [Title]
 getNodeCommercial_item(filter: Commercial_itemInput): Commercial_item
-getNodeCommercial_items(filter: Commercial_itemInput, options: Options): [Commercial_item]
+getNodeCommercial_items(filter: Commercial_itemInput, options: Options, sort: [Commercial_itemSort!]): [Commercial_item]
 }
 
 schema {

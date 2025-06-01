@@ -1,3 +1,8 @@
+enum SortingDirection {
+    ASC
+    DESC
+}
+
 type City @alias(property:"city") {
 _id: ID! @id
 name: String
@@ -10,6 +15,11 @@ within:Within
 input CityInput {
 _id: ID @id
 name: String
+}
+
+input CitySort {
+    _id: SortingDirection
+    name: SortingDirection
 }
 
 type Review @alias(property:"review") {
@@ -28,6 +38,13 @@ _id: ID @id
 body: String
 created_date: String
 rating: Int
+}
+
+input ReviewSort {
+    _id: SortingDirection
+    body: SortingDirection
+    created_date: SortingDirection
+    rating: SortingDirection
 }
 
 type Person @alias(property:"person") {
@@ -51,6 +68,13 @@ last_name: String
 person_id: Int
 }
 
+input PersonSort {
+    _id: SortingDirection
+    first_name: SortingDirection
+    last_name: SortingDirection
+    person_id: SortingDirection
+}
+
 type Restaurant @alias(property:"restaurant") {
 _id: ID! @id
 restaurant_id: Int
@@ -71,6 +95,13 @@ name: String
 address: String
 }
 
+input RestaurantSort {
+    _id: SortingDirection
+    restaurant_id: SortingDirection
+    name: SortingDirection
+    address: SortingDirection
+}
+
 type Cuisine @alias(property:"cuisine") {
 _id: ID! @id
 name: String
@@ -83,6 +114,11 @@ _id: ID @id
 name: String
 }
 
+input CuisineSort {
+    _id: SortingDirection
+    name: SortingDirection
+}
+
 type State @alias(property:"state") {
 _id: ID! @id
 name: String
@@ -92,6 +128,11 @@ within:Within
 input StateInput {
 _id: ID @id
 name: String
+}
+
+input StateSort {
+    _id: SortingDirection
+    name: SortingDirection
 }
 
 type Lives @alias(property:"lives") {
@@ -124,17 +165,17 @@ limit:Int
 
 type Query {
 getNodeCity(filter: CityInput): City
-getNodeCitys(filter: CityInput, options: Options): [City]
+getNodeCitys(filter: CityInput, options: Options, sort: [CitySort!]): [City]
 getNodeReview(filter: ReviewInput): Review
-getNodeReviews(filter: ReviewInput, options: Options): [Review]
+getNodeReviews(filter: ReviewInput, options: Options, sort: [ReviewSort!]): [Review]
 getNodePerson(filter: PersonInput): Person
-getNodePersons(filter: PersonInput, options: Options): [Person]
+getNodePersons(filter: PersonInput, options: Options, sort: [PersonSort!]): [Person]
 getNodeRestaurant(filter: RestaurantInput): Restaurant
-getNodeRestaurants(filter: RestaurantInput, options: Options): [Restaurant]
+getNodeRestaurants(filter: RestaurantInput, options: Options, sort: [RestaurantSort!]): [Restaurant]
 getNodeCuisine(filter: CuisineInput): Cuisine
-getNodeCuisines(filter: CuisineInput, options: Options): [Cuisine]
+getNodeCuisines(filter: CuisineInput, options: Options, sort: [CuisineSort!]): [Cuisine]
 getNodeState(filter: StateInput): State
-getNodeStates(filter: StateInput, options: Options): [State]
+getNodeStates(filter: StateInput, options: Options, sort: [StateSort!]): [State]
 }
 
 schema {

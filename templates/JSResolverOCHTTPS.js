@@ -220,9 +220,9 @@ function getSchemaQueryInfo(name) {
         graphQuery: null,
         args: [],
         graphDBIdArgName: '',
+        argOrderBy: [],
         argOptionsLimit: null,
         argOptionsOffset: null,
-        argOptionsOrderBy: null,
     };
 
     schemaDataModel.definitions.forEach(def => {
@@ -278,6 +278,8 @@ function getSchemaQueryInfo(name) {
                         getSchemaInputTypeArgs(arg.type.name.value, r);
                     } else if (arg.type.kind === 'NonNullType') {
                         getSchemaInputTypeArgs(arg.type.type.name.value, r);
+                    } else if (arg.type.kind === 'ListType') {
+                        getSchemaInputTypeArgs(arg.type.type.type.name.value, r);
                     } else if (arg.type.type.name.value === 'String' || arg.type.type.name.value === 'Int' || arg.type.type.name.value === 'ID') {
                         r.args.push({name: arg.name.value, type: arg.type.type.name.value});
                     } else {
@@ -367,9 +369,9 @@ function getSchemaFieldInfo(typeName, fieldName, pathName) {
         relationship: null,
         args:[],
         graphDBIdArgName: '',
+        argOrderBy: [],
         argOptionsLimit: null,
         argOptionsOffset: null,
-        argOptionsOrderBy: null,
     }
 
     schemaDataModel.definitions.forEach(def => {
@@ -455,13 +457,22 @@ function getOptionsInSchemaInfo(fields, schemaInfo) {
         if (field.name.value == 'offset') {            
             schemaInfo.argOptionsOffset = field.value.value;
         }
-        if (field.name.value == 'orderBy') {            
-            schemaInfo.argOptionsOrderBy = field.value.value;
-        }
-        */        
+        */
     });    
 }
 
+function getSortInfo(fields, schemaInfo) {
+    if (Object.keys(fields)?.length > 1) {
+        // too many keys
+        throw new Error('Cannot have more than one key in sort object');
+    }
+
+    fields.forEach(field => {
+        const fieldName = field.name.value;
+        const direction = field.value.value.toUpperCase();
+        schemaInfo.argOrderBy.push(`${fieldName} ${direction}`);
+    });
+}
   
 function createQueryFunctionMatchStatement(obj, matchStatements, querySchemaInfo) {        
     if (querySchemaInfo.graphQuery != null) {
@@ -482,8 +493,20 @@ function createQueryFunctionMatchStatement(obj, matchStatements, querySchemaInfo
             matchStatements.push(`MATCH (${querySchemaInfo.pathName}:\`${querySchemaInfo.returnTypeAlias}\`)${where}`);
         }
 
-        if (querySchemaInfo.argOptionsLimit != null)
-            matchStatements.push(`WITH ${querySchemaInfo.pathName} LIMIT ${querySchemaInfo.argOptionsLimit}`);
+        if (querySchemaInfo.argOptionsLimit != null || querySchemaInfo.argOrderBy.length > 0 ) {
+            matchStatements.push(`WITH ${querySchemaInfo.pathName}`);
+
+            if (querySchemaInfo.argOrderBy.length > 0) {
+                const fields = querySchemaInfo.argOrderBy
+                    .map(field => `${querySchemaInfo.pathName}.${field}`)
+                    .join(', ');
+                matchStatements.push(`ORDER BY ${fields}`);
+            }
+
+            if (querySchemaInfo.argOptionsLimit != null) {
+                matchStatements.push(`LIMIT ${querySchemaInfo.argOptionsLimit}`);
+            }
+        }
     }
 
     withStatements.push({carryOver: querySchemaInfo.pathName, inLevel:'', content:''});
@@ -492,7 +515,7 @@ function createQueryFunctionMatchStatement(obj, matchStatements, querySchemaInfo
 
 function getQueryArguments(args, querySchemaInfo) {
     let where = '';
-    let queryArguments = '';    
+    let queryArguments = '';
     args.forEach(arg => {
         if (arg.name.value == 'filter') {
             let inputFields = transformFunctionInputParameters(arg.value.fields, querySchemaInfo);
@@ -507,6 +530,15 @@ function getQueryArguments(args, querySchemaInfo) {
         } else if (arg.name.value == 'options') {
             if (arg.value.kind === 'ObjectValue')
                 getOptionsInSchemaInfo(arg.value.fields, querySchemaInfo);
+
+        } else if (arg.name.value == 'sort') {
+            if (arg.value.kind === 'ListValue') {
+                arg.value.values.forEach(sortItem => {
+                    if (sortItem.kind === 'ObjectValue') {
+                        getSortInfo(sortItem.fields, querySchemaInfo);
+                    }
+                });
+            }
         } else {
             queryArguments = queryArguments + arg.name.value + ":'" + arg.value.value + "',";
         }
@@ -629,7 +661,7 @@ function createQueryFieldLeafStatement(fieldSchemaInfo, lastNamePath) {
 function createTypeFieldStatementAndRecurse(e, fieldSchemaInfo, lastNamePath, lastType) {
     const schemaTypeInfo = getSchemaTypeInfo(lastType, fieldSchemaInfo.name, lastNamePath);
     
-    // check if the field has is a function with parameters, look for filters and options
+    // check if the field has a function with parameters, look for filters and options
     if (e.arguments !== undefined) {
         e.arguments.forEach(arg => {
             if (arg.value.kind === 'ObjectValue' && arg.name.value === 'options')
@@ -779,25 +811,27 @@ function resolveGrapgDBqueryForGraphQLQuery (obj, querySchemaInfo) {
 function transformFunctionInputParameters(fields, schemaInfo) {
     let r = { fields:'', graphIdValue: null };
     schemaInfo.args.forEach(arg => {
-        fields.forEach(field => {
-            if (field.name.value === arg.name) {
-                let value = field.value.value;
-                if (field.value.kind === 'IntValue' || field.value.kind === 'FloatValue') {
-                    value = Number(value);
+        if (arg.type !== 'SortingDirection') {
+            fields.forEach(field => {
+                if (field.name.value === arg.name) {
+                    let value = field.value.value;
+                    if (field.value.kind === 'IntValue' || field.value.kind === 'FloatValue') {
+                        value = Number(value);
+                    }
+                    if (arg.name === schemaInfo.graphDBIdArgName) {
+                        r.graphIdValue = value
+                    } else if (arg.alias != null) {
+                        let param = schemaInfo.pathName + '_' + arg.alias;
+                        r.fields += `${arg.alias}: $${param}, `;
+                        Object.assign(parameters, { [param]: value });
+                    } else  {
+                        let param = schemaInfo.pathName + '_' + arg.name;
+                        r.fields += `${arg.name}: $${param}, `;
+                        Object.assign(parameters, { [param]: value });
+                    }
                 }
-                if (arg.name === schemaInfo.graphDBIdArgName) {
-                    r.graphIdValue = value
-                } else if (arg.alias != null) {
-                    let param = schemaInfo.pathName + '_' + arg.alias;
-                    r.fields += `${arg.alias}: $${param}, `;
-                    Object.assign(parameters, { [param]: value });
-                } else  {
-                    let param = schemaInfo.pathName + '_' + arg.name;
-                    r.fields += `${arg.name}: $${param}, `;
-                    Object.assign(parameters, { [param]: value });
-                }
-            }
-        });
+            });
+        }
     });
 
     r.fields = r.fields.substring(0, r.fields.length - 2);

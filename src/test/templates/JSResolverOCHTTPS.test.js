@@ -108,6 +108,28 @@ test('should resolve queries with an integer id filter', () => {
     });
 });
 
+test('should resolve queries with sort arguments as a list', () => {
+    const result = resolveGraphDBQueryFromAppSyncEvent({
+        field: 'getNodeAirports',
+        arguments: { sort: [{ desc: 'ASC' }, { code: 'DESC' }, { city: 'DESC' }] },
+        selectionSetGraphQL: '{\n  desc\n  code\n  city\n}'
+    });
+
+    expect(result).toEqual({
+        query: 'MATCH (getNodeAirports_Airport:`airport`)\n' +
+            'WITH getNodeAirports_Airport\n' +
+            'ORDER BY getNodeAirports_Airport.desc ASC, getNodeAirports_Airport.code DESC, getNodeAirports_Airport.city DESC\n' +
+            'RETURN collect({desc: getNodeAirports_Airport.`desc`, code: getNodeAirports_Airport.`code`, city: getNodeAirports_Airport.`city`})',
+        parameters: {},
+        language: 'opencypher',
+        refactorOutput: null
+    });
+});
+
+// test('should fail to resolve queries with sort arguments in one object', () => {
+//
+// });
+
 test('should resolve gremlin query with argument', () => {
     const result = resolveGraphDBQueryFromAppSyncEvent({
         field: 'getAirportWithGremlin',
@@ -423,7 +445,8 @@ test('should control number of result using limit option (Query0018)', () => {
 
     expect(result).toMatchObject({
         query: 'MATCH (getNodeAirports_Airport:`airport`{code: $getNodeAirports_Airport_code})\n' +
-            'WITH getNodeAirports_Airport LIMIT 1\n' +
+            'WITH getNodeAirports_Airport\n' +
+            'LIMIT 1\n' +
             'RETURN collect({city: getNodeAirports_Airport.`city`})[..1]',
         parameters: { getNodeAirports_Airport_code: 'SEA' },
         language: 'opencypher',
