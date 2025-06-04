@@ -1,3 +1,8 @@
+enum SortingDirection {
+    ASC
+    DESC
+}
+
 type Stadium {
     _id: ID! @id
     opened: Int
@@ -15,6 +20,13 @@ input StadiumInput {
     name: StringScalarFilters
 }
 
+input StadiumSort {
+    _id: SortingDirection
+    opened: SortingDirection
+    capacity: SortingDirection
+    name: SortingDirection
+}
+
 type League {
     _id: ID! @id
     nickname: String
@@ -27,6 +39,12 @@ input LeagueInput {
     _id: ID @id
     nickname: StringScalarFilters
     name: StringScalarFilters
+}
+
+input LeagueSort {
+    _id: SortingDirection
+    nickname: SortingDirection
+    name: SortingDirection
 }
 
 type Team {
@@ -48,6 +66,14 @@ input TeamInput {
     founded: Int
 }
 
+input TeamSort {
+    _id: SortingDirection
+    nickname: SortingDirection
+    name: SortingDirection
+    fullName: SortingDirection
+    founded: SortingDirection
+}
+
 type City {
     _id: ID! @id
     name: String
@@ -58,6 +84,11 @@ type City {
 input CityInput {
     _id: ID @id
     name: StringScalarFilters
+}
+
+input CitySort {
+    _id: SortingDirection
+    name: SortingDirection
 }
 
 type City_edge @alias(property: "CITY_EDGE") {
@@ -86,13 +117,13 @@ input StringScalarFilters {
 
 type Query {
     getNodeStadium(filter: StadiumInput): Stadium
-    getNodeStadiums(filter: StadiumInput, options: Options): [Stadium]
+    getNodeStadiums(filter: StadiumInput, options: Options, sort: [StadiumSort!]): [Stadium]
     getNodeLeague(filter: LeagueInput): League
-    getNodeLeagues(filter: LeagueInput, options: Options): [League]
+    getNodeLeagues(filter: LeagueInput, options: Options, sort: [LeagueSort!]): [League]
     getNodeTeam(filter: TeamInput): Team
-    getNodeTeams(filter: TeamInput, options: Options): [Team]
+    getNodeTeams(filter: TeamInput, options: Options, sort: [TeamSort!]): [Team]
     getNodeCity(filter: CityInput): City
-    getNodeCitys(filter: CityInput, options: Options): [City]
+    getNodeCitys(filter: CityInput, options: Options, sort: [CitySort!]): [City]
 }
 
 schema {

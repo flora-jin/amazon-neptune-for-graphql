@@ -222,9 +222,9 @@ function getSchemaQueryInfo(name) {
         graphQuery: null,
         args: [],
         graphDBIdArgName: '',
+        argOrderBy: [],
         argOptionsLimit: null,
         argOptionsOffset: null,
-        argOptionsOrderBy: null,
     };
 
     schemaDataModel.definitions.forEach(def => {
@@ -280,6 +280,8 @@ function getSchemaQueryInfo(name) {
                         getSchemaInputTypeArgs(arg.type.name.value, r);
                     } else if (arg.type.kind === 'NonNullType') {
                         getSchemaInputTypeArgs(arg.type.type.name.value, r);
+                    } else if (arg.type.kind === 'ListType') {
+                        getSchemaInputTypeArgs(arg.type.type.type.name.value, r);
                     } else if (arg.type.type.name.value === 'String' || arg.type.type.name.value === 'Int' || arg.type.type.name.value === 'ID') {
                         r.args.push({name: arg.name.value, type: arg.type.type.name.value});
                     } else {
@@ -369,9 +371,9 @@ function getSchemaFieldInfo(typeName, fieldName, pathName) {
         relationship: null,
         args:[],
         graphDBIdArgName: '',
+        argOrderBy: [],
         argOptionsLimit: null,
         argOptionsOffset: null,
-        argOptionsOrderBy: null,
     }
 
     schemaDataModel.definitions.forEach(def => {
