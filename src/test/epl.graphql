@@ -31,7 +31,7 @@ type League {
     _id: ID! @id
     nickname: String
     name: String
-    teamCurrent_leaguesIn(filter: TeamInput, options: Options): [Team] @relationship(edgeType: "CURRENT_LEAGUE", direction: IN)
+    teamCurrent_leaguesIn(filter: TeamInput, options: Options, sort: [TeamSort!]): [Team] @relationship(edgeType: "CURRENT_LEAGUE", direction: IN)
     CURRENT_LEAGUE: Current_league
 }
 
@@ -77,7 +77,7 @@ input TeamSort {
 type City {
     _id: ID! @id
     name: String
-    stadiumCity_edgesIn(filter: StadiumInput, options: Options): [Stadium] @relationship(edgeType: "CITY_EDGE", direction: IN)
+    stadiumCity_edgesIn(filter: StadiumInput, options: Options, sort: [StadiumSort!]): [Stadium] @relationship(edgeType: "CITY_EDGE", direction: IN)
     CITY_EDGE: City_edge
 }
 

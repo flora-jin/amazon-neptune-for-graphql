@@ -6,7 +6,7 @@ enum SortingDirection {
 type Dateofbirth @alias(property: "DateOfBirth") {
     _id: ID! @id
     value: String
-    accountFeature_of_accountsOut(filter: AccountInput, options: Options): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
+    accountFeature_of_accountsOut(filter: AccountInput, options: Options, sort: [AccountSort!]): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
     FEATURE_OF_ACCOUNT: Feature_of_account
 }
 
@@ -25,12 +25,12 @@ type Account {
     first_name: String
     account_number: String
     last_name: String
-    emailaddressFeature_of_accountsIn(filter: EmailaddressInput, options: Options): [Emailaddress] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: IN)
+    emailaddressFeature_of_accountsIn(filter: EmailaddressInput, options: Options, sort: [EmailaddressSort!]): [Emailaddress] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: IN)
     ipaddressFeature_of_accountIn: Ipaddress @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: IN)
     addressFeature_of_accountIn: Address @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: IN)
     dateofbirthFeature_of_accountIn: Dateofbirth @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: IN)
-    phonenumberFeature_of_accountsIn(filter: PhonenumberInput, options: Options): [Phonenumber] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: IN)
-    transactionAccount_edgesIn(filter: TransactionInput, options: Options): [Transaction] @relationship(edgeType: "ACCOUNT_EDGE", direction: IN)
+    phonenumberFeature_of_accountsIn(filter: PhonenumberInput, options: Options, sort: [PhonenumberSort!]): [Phonenumber] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: IN)
+    transactionAccount_edgesIn(filter: TransactionInput, options: Options, sort: [TransactionSort!]): [Transaction] @relationship(edgeType: "ACCOUNT_EDGE", direction: IN)
     FEATURE_OF_ACCOUNT: Feature_of_account
     ACCOUNT_EDGE: Account_edge
 }
@@ -52,7 +52,7 @@ input AccountSort {
 type Merchant {
     _id: ID! @id
     name: String
-    transactionMerchant_edgesIn(filter: TransactionInput, options: Options): [Transaction] @relationship(edgeType: "MERCHANT_EDGE", direction: IN)
+    transactionMerchant_edgesIn(filter: TransactionInput, options: Options, sort: [TransactionSort!]): [Transaction] @relationship(edgeType: "MERCHANT_EDGE", direction: IN)
     MERCHANT_EDGE: Merchant_edge
 }
 
@@ -94,7 +94,7 @@ input TransactionSort {
 type Address {
     _id: ID! @id
     value: String
-    accountFeature_of_accountsOut(filter: AccountInput, options: Options): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
+    accountFeature_of_accountsOut(filter: AccountInput, options: Options, sort: [AccountSort!]): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
     FEATURE_OF_ACCOUNT: Feature_of_account
 }
 
@@ -111,8 +111,8 @@ input AddressSort {
 type Phonenumber @alias(property: "PhoneNumber") {
     _id: ID! @id
     value: String
-    accountFeature_of_accountsOut(filter: AccountInput, options: Options): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
-    transactionFeature_of_transactionsOut(filter: TransactionInput, options: Options): [Transaction] @relationship(edgeType: "FEATURE_OF_TRANSACTION", direction: OUT)
+    accountFeature_of_accountsOut(filter: AccountInput, options: Options, sort: [AccountSort!]): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
+    transactionFeature_of_transactionsOut(filter: TransactionInput, options: Options, sort: [TransactionSort!]): [Transaction] @relationship(edgeType: "FEATURE_OF_TRANSACTION", direction: OUT)
     FEATURE_OF_ACCOUNT: Feature_of_account
     FEATURE_OF_TRANSACTION: Feature_of_transaction
 }
@@ -130,8 +130,8 @@ input PhonenumberSort {
 type Ipaddress @alias(property: "IpAddress") {
     _id: ID! @id
     value: String
-    accountFeature_of_accountsOut(filter: AccountInput, options: Options): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
-    transactionFeature_of_transactionsOut(filter: TransactionInput, options: Options): [Transaction] @relationship(edgeType: "FEATURE_OF_TRANSACTION", direction: OUT)
+    accountFeature_of_accountsOut(filter: AccountInput, options: Options, sort: [AccountSort!]): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
+    transactionFeature_of_transactionsOut(filter: TransactionInput, options: Options, sort: [TransactionSort!]): [Transaction] @relationship(edgeType: "FEATURE_OF_TRANSACTION", direction: OUT)
     FEATURE_OF_ACCOUNT: Feature_of_account
     FEATURE_OF_TRANSACTION: Feature_of_transaction
 }
@@ -149,7 +149,7 @@ input IpaddressSort {
 type Emailaddress @alias(property: "EmailAddress") {
     _id: ID! @id
     value: String
-    accountFeature_of_accountsOut(filter: AccountInput, options: Options): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
+    accountFeature_of_accountsOut(filter: AccountInput, options: Options, sort: [AccountSort!]): [Account] @relationship(edgeType: "FEATURE_OF_ACCOUNT", direction: OUT)
     FEATURE_OF_ACCOUNT: Feature_of_account
 }
 

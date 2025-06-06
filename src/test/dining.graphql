@@ -6,8 +6,8 @@ enum SortingDirection {
 type City @alias(property: "city") {
     _id: ID! @id
     name: String
-    personLivessIn(filter: PersonInput, options: Options): [Person] @relationship(edgeType: "lives", direction: IN)
-    restaurantWithinsIn(filter: RestaurantInput, options: Options): [Restaurant] @relationship(edgeType: "within", direction: IN)
+    personLivessIn(filter: PersonInput, options: Options, sort: [PersonSort!]): [Person] @relationship(edgeType: "lives", direction: IN)
+    restaurantWithinsIn(filter: RestaurantInput, options: Options, sort: [RestaurantSort!]): [Restaurant] @relationship(edgeType: "within", direction: IN)
     lives: Lives
     within: Within
 }
@@ -53,9 +53,9 @@ type Person @alias(property: "person") {
     last_name: String
     person_id: Int
     cityLivesOut: City @relationship(edgeType: "lives", direction: OUT)
-    reviewWrotesOut(filter: ReviewInput, options: Options): [Review] @relationship(edgeType: "wrote", direction: OUT)
-    personFriendssOut(filter: PersonInput, options: Options): [Person] @relationship(edgeType: "friends", direction: OUT)
-    personFriendssIn(filter: PersonInput, options: Options): [Person] @relationship(edgeType: "friends", direction: IN)
+    reviewWrotesOut(filter: ReviewInput, options: Options, sort: [ReviewSort!]): [Review] @relationship(edgeType: "wrote", direction: OUT)
+    personFriendssOut(filter: PersonInput, options: Options, sort: [PersonSort!]): [Person] @relationship(edgeType: "friends", direction: OUT)
+    personFriendssIn(filter: PersonInput, options: Options, sort: [PersonSort!]): [Person] @relationship(edgeType: "friends", direction: IN)
     lives: Lives
     wrote: Wrote
     friends: Friends
@@ -82,7 +82,7 @@ type Restaurant @alias(property: "restaurant") {
     address: String
     cityWithinOut: City @relationship(edgeType: "within", direction: OUT)
     cuisineServesOut: Cuisine @relationship(edgeType: "serves", direction: OUT)
-    reviewAboutsIn(filter: ReviewInput, options: Options): [Review] @relationship(edgeType: "about", direction: IN)
+    reviewAboutsIn(filter: ReviewInput, options: Options, sort: [ReviewSort!]): [Review] @relationship(edgeType: "about", direction: IN)
     within: Within
     serves: Serves
     about: About
@@ -105,7 +105,7 @@ input RestaurantSort {
 type Cuisine @alias(property: "cuisine") {
     _id: ID! @id
     name: String
-    restaurantServessIn(filter: RestaurantInput, options: Options): [Restaurant] @relationship(edgeType: "serves", direction: IN)
+    restaurantServessIn(filter: RestaurantInput, options: Options, sort: [RestaurantSort!]): [Restaurant] @relationship(edgeType: "serves", direction: IN)
     serves: Serves
 }
 

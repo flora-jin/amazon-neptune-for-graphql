@@ -8,7 +8,7 @@ type Continent @alias(property: "continent") {
     type: String
     code: String
     desc: String
-    airportContainssOut(filter: AirportInput, options: Options): [Airport] @relationship(edgeType: "contains", direction: OUT)
+    airportContainssOut(filter: AirportInput, options: Options, sort: [AirportSort!]): [Airport] @relationship(edgeType: "contains", direction: OUT)
     contains: Contains
 }
 
@@ -31,7 +31,7 @@ type Country @alias(property: "country") {
     type: String
     code: String
     desc: String
-    airportContainssOut(filter: AirportInput, options: Options): [Airport] @relationship(edgeType: "contains", direction: OUT)
+    airportContainssOut(filter: AirportInput, options: Options, sort: [AirportSort!]): [Airport] @relationship(edgeType: "contains", direction: OUT)
     contains: Contains
 }
 
@@ -92,8 +92,8 @@ type Airport @alias(property: "airport") {
     elev: Int
     continentContainsIn: Continent @relationship(edgeType: "contains", direction: IN)
     countryContainsIn: Country @relationship(edgeType: "contains", direction: IN)
-    airportRoutesOut(filter: AirportInput, options: Options): [Airport] @relationship(edgeType: "route", direction: OUT)
-    airportRoutesIn(filter: AirportInput, options: Options): [Airport] @relationship(edgeType: "route", direction: IN)
+    airportRoutesOut(filter: AirportInput, options: Options, sort: [AirportSort!]): [Airport] @relationship(edgeType: "route", direction: OUT)
+    airportRoutesIn(filter: AirportInput, options: Options, sort: [AirportSort!]): [Airport] @relationship(edgeType: "route", direction: IN)
     contains: Contains
     route: Route
 }

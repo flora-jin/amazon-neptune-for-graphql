@@ -7,7 +7,7 @@ type Date @alias(property: "date") {
     _id: ID! @id
     type: String
     text: String
-    postFound_insIn(filter: PostInput, options: Options): [Post] @relationship(edgeType: "found_in", direction: IN)
+    postFound_insIn(filter: PostInput, options: Options, sort: [PostSort!]): [Post] @relationship(edgeType: "found_in", direction: IN)
     found_in: Found_in
 }
 
@@ -47,14 +47,14 @@ type Post @alias(property: "post") {
     _id: ID! @id
     title: String
     post_date: String
-    tagTaggedsOut(filter: TagInput, options: Options): [Tag] @relationship(edgeType: "tagged", direction: OUT)
-    organizationFound_insOut(filter: OrganizationInput, options: Options): [Organization] @relationship(edgeType: "found_in", direction: OUT)
-    titleFound_insOut(filter: TitleInput, options: Options): [Title] @relationship(edgeType: "found_in", direction: OUT)
-    locationFound_insOut(filter: LocationInput, options: Options): [Location] @relationship(edgeType: "found_in", direction: OUT)
-    dateFound_insOut(filter: DateInput, options: Options): [Date] @relationship(edgeType: "found_in", direction: OUT)
-    commercial_itemFound_insOut(filter: Commercial_itemInput, options: Options): [Commercial_item] @relationship(edgeType: "found_in", direction: OUT)
-    otherFound_insOut(filter: OtherInput, options: Options): [Other] @relationship(edgeType: "found_in", direction: OUT)
-    authorWritten_bysOut(filter: AuthorInput, options: Options): [Author] @relationship(edgeType: "written_by", direction: OUT)
+    tagTaggedsOut(filter: TagInput, options: Options, sort: [TagSort!]): [Tag] @relationship(edgeType: "tagged", direction: OUT)
+    organizationFound_insOut(filter: OrganizationInput, options: Options, sort: [OrganizationSort!]): [Organization] @relationship(edgeType: "found_in", direction: OUT)
+    titleFound_insOut(filter: TitleInput, options: Options, sort: [TitleSort!]): [Title] @relationship(edgeType: "found_in", direction: OUT)
+    locationFound_insOut(filter: LocationInput, options: Options, sort: [LocationSort!]): [Location] @relationship(edgeType: "found_in", direction: OUT)
+    dateFound_insOut(filter: DateInput, options: Options, sort: [DateSort!]): [Date] @relationship(edgeType: "found_in", direction: OUT)
+    commercial_itemFound_insOut(filter: Commercial_itemInput, options: Options, sort: [Commercial_itemSort!]): [Commercial_item] @relationship(edgeType: "found_in", direction: OUT)
+    otherFound_insOut(filter: OtherInput, options: Options, sort: [OtherSort!]): [Other] @relationship(edgeType: "found_in", direction: OUT)
+    authorWritten_bysOut(filter: AuthorInput, options: Options, sort: [AuthorSort!]): [Author] @relationship(edgeType: "written_by", direction: OUT)
     tagged: Tagged
     found_in: Found_in
     written_by: Written_by
@@ -75,7 +75,7 @@ input PostSort {
 type Author @alias(property: "author") {
     _id: ID! @id
     name: String
-    postWritten_bysIn(filter: PostInput, options: Options): [Post] @relationship(edgeType: "written_by", direction: IN)
+    postWritten_bysIn(filter: PostInput, options: Options, sort: [PostSort!]): [Post] @relationship(edgeType: "written_by", direction: IN)
     written_by: Written_by
 }
 
@@ -93,7 +93,7 @@ type Organization @alias(property: "organization") {
     _id: ID! @id
     type: String
     text: String
-    postFound_insIn(filter: PostInput, options: Options): [Post] @relationship(edgeType: "found_in", direction: IN)
+    postFound_insIn(filter: PostInput, options: Options, sort: [PostSort!]): [Post] @relationship(edgeType: "found_in", direction: IN)
     found_in: Found_in
 }
 
@@ -113,7 +113,7 @@ type Location @alias(property: "location") {
     _id: ID! @id
     type: String
     text: String
-    postFound_insIn(filter: PostInput, options: Options): [Post] @relationship(edgeType: "found_in", direction: IN)
+    postFound_insIn(filter: PostInput, options: Options, sort: [PostSort!]): [Post] @relationship(edgeType: "found_in", direction: IN)
     found_in: Found_in
 }
 
@@ -132,7 +132,7 @@ input LocationSort {
 type Tag @alias(property: "tag") {
     _id: ID! @id
     tag: String
-    postTaggedsIn(filter: PostInput, options: Options): [Post] @relationship(edgeType: "tagged", direction: IN)
+    postTaggedsIn(filter: PostInput, options: Options, sort: [PostSort!]): [Post] @relationship(edgeType: "tagged", direction: IN)
     tagged: Tagged
 }
 
@@ -150,7 +150,7 @@ type Title @alias(property: "title") {
     _id: ID! @id
     type: String
     text: String
-    postFound_insIn(filter: PostInput, options: Options): [Post] @relationship(edgeType: "found_in", direction: IN)
+    postFound_insIn(filter: PostInput, options: Options, sort: [PostSort!]): [Post] @relationship(edgeType: "found_in", direction: IN)
     found_in: Found_in
 }
 
@@ -170,7 +170,7 @@ type Commercial_item @alias(property: "commercial_item") {
     _id: ID! @id
     type: String
     text: String
-    postFound_insIn(filter: PostInput, options: Options): [Post] @relationship(edgeType: "found_in", direction: IN)
+    postFound_insIn(filter: PostInput, options: Options, sort: [PostSort!]): [Post] @relationship(edgeType: "found_in", direction: IN)
     found_in: Found_in
 }
 
