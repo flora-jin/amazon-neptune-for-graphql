@@ -1,11 +1,11 @@
 import { readJSONFile, testResolverQueriesResults } from '../../testLib';
 import fs from "fs";
 
-const casetest = readJSONFile('./test/TestCases/Case01/case01.json');
+const casetest = readJSONFile('./test/TestCases/Case01/case02.json');
 
 try {
     await testResolverQueriesResults(   './TestCases/Case01/output/output.resolver.graphql.js',
-        './test/TestCases/Case01/queries',
+        './test/TestCases/Case01/queriesWithPrefix',
         './test/TestCases/Case01/output/output.resolver.schema.json.gz',
         casetest.host,
         casetest.port);

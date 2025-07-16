@@ -1,0 +1,10 @@
+{
+    "name": "Limit option",
+    "description": "",
+    "graphql": "query MyQuery {\n integrationTestQuery_getNodeAirports(options: {limit: 1}, filter: {code: \"SEA\"}) {\n city }\n }",
+    "result":[
+        {
+          "city": "Seattle"
+        }
+      ]
+}

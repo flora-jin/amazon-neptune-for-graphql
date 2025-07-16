@@ -1,0 +1,12 @@
+{
+    "name": "Get different type of fields",
+    "description": "",
+    "graphql": "query MyQuery {\n integrationTestQuery_getNodeAirport(filter: {code: \"SEA\"}) {\n city\n elev\n runways\n lat\n lon\n }\n }",
+    "result":{
+        "city": "Seattle",
+        "elev": 432,
+        "lon": -122.30899810791,
+        "runways": 3,
+        "lat": 47.4490013122559
+    }
+}

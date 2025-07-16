@@ -1,0 +1,20 @@
+{  
+    "id": "3",
+    "name": "integrationTestQuery_getAirport nested type",
+    "description": "Nested types single and array, references in and out",
+    "graphql": "query MyQuery {\n integrationTestQuery_getAirport(code: \"YKM\") {\n city\n continentContainsIn {\n desc\n }\n countryContainsIn {\n desc\n }\n airportRoutesOut {\n code\n }\n }\n }",
+    "result":{
+        "airportRoutesOut": [
+          {
+            "code": "SEA"
+          }
+        ],
+        "city": "Yakima",
+        "countryContainsIn": {
+          "desc": "United States"
+        },
+        "continentContainsIn": {
+          "desc": "North America"
+        }
+      }
+}

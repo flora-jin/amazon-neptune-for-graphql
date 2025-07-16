@@ -1,0 +1,9 @@
+{
+    "name": "graphQuery type",
+    "description": "Query using a graphQuery returning a type",
+    "graphql": "query MyQuery {\n integrationTestQuery_getAirportConnection(fromCode: \"YKF\", country: \"US\", toCode: \"ORD\") {\n city\n code\n }\n }\n",
+    "result":{
+        "code": "YYC",
+        "city": "Calgary"
+    }
+}

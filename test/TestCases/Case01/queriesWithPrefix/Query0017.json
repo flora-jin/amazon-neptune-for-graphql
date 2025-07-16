@@ -1,0 +1,9 @@
+{
+    "name": "Get by _id",
+    "description": "",
+    "neptuneType": "neptune-db",
+    "graphql": "query MyQuery {\n integrationTestQuery_getNodeAirport(filter: {_id: \"22\"}) {\n city\n }\n }",
+    "result":{
+        "city": "Seattle"
+    }
+}

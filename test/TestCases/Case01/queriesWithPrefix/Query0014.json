@@ -1,0 +1,8 @@
+{
+    "name": "Field graphQuery outboundRoutesCount",
+    "description": "",
+    "graphql": "query MyQuery {\n integrationTestQuery_getNodeAirport(filter: {code: \"YYZ\"}) {\n outboundRoutesCount\n }\n }",
+    "result":{
+        "outboundRoutesCount": 195
+    }
+}

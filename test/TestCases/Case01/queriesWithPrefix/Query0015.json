@@ -1,0 +1,8 @@
+{
+    "name": "Mutation: create node",
+    "description": "",
+    "graphql": "mutation MyMutation {\n integrationTestMutation_createNodeAirport(input: {code: \"NAX\", city: \"Reggio Emilia\"}) {\n code\n }\n }",
+    "result":{
+        "code": "NAX"
+    }
+}

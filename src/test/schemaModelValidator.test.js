@@ -5,12 +5,26 @@ import { schemaParser, schemaStringify } from '../schemaParser.js';
 
 describe('validatedSchemaModel', () => {
     let model;
+    let modelQueryPrefix;
+    let modelMutationPrefix;
+    let modelPrefixes;
 
     beforeAll(() => {
         loggerInit('./output', false, 'silent');
 
-        const schema = readFileSync('./src/test/user-group.graphql');
+        const schema = readFileSync('./src/test/user-group.graphql', 'utf-8');
+
         model = validatedSchemaModel(schemaParser(schema));
+        modelQueryPrefix = validatedSchemaModel(schemaParser(schema), {
+            inputQueryPrefix: 'userGroupQuery_'
+        });
+        modelMutationPrefix = validatedSchemaModel(schemaParser(schema), {
+            inputMutationPrefix: 'userGroupMutation_'
+        });
+        modelPrefixes = validatedSchemaModel(schemaParser(schema), {
+            inputQueryPrefix: 'userGroupQueryTest_',
+            inputMutationPrefix: 'userGroupMutationTest_'
+        });
     });
 
     test('types definitions should be as expected', () => {
@@ -104,9 +118,27 @@ describe('validatedSchemaModel', () => {
     
     test('should output expected validated schema', () => {
         const actual = schemaStringify(model, true);
-        const expected = readFileSync('./src/test/user-group-validated.graphql', 'utf8')
+        const expected = readFileSync('./src/test/user-group-validated.graphql', 'utf8');
         expect(actual).toBe(expected); 
     });
+
+    test('should output expected validated schema with query prefixes', () => {
+        const actual = schemaStringify(modelQueryPrefix, true);
+        const expected = readFileSync('./src/test/user-group-validated-with-query-prefix.graphql', 'utf8');
+        expect(actual).toBe(expected);
+    })
+
+    test('should output expected validated schema with mutation prefixes', () => {
+        const actual = schemaStringify(modelMutationPrefix, true);
+        const expected = readFileSync('./src/test/user-group-validated-with-mutation-prefix.graphql', 'utf8');
+        expect(actual).toBe(expected);
+    })
+
+    test('should output expected validated schema with query and mutation prefixes', () => {
+        const actual = schemaStringify(modelPrefixes, true);
+        const expected = readFileSync('./src/test/user-group-validated-with-prefixes.graphql', 'utf8');
+        expect(actual).toBe(expected);
+    })
 
     function getIdFields(objTypeDef) {
         return objTypeDef.fields.filter(

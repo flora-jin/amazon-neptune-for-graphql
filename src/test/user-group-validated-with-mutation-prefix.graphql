@@ -166,26 +166,26 @@ input StringScalarFilters {
 }
 
 type Query {
-  getUser(filter: UserInput): User
-  getUsers(filter: UserInput, options: Options, sort: [UserSort!]): [User]
-  getGroup(filter: GroupInput): Group
-  getGroups(filter: GroupInput, options: Options, sort: [GroupSort!]): [Group]
-  getModerator(filter: ModeratorInput): Moderator
-  getModerators(filter: ModeratorInput, options: Options, sort: [ModeratorSort!]): [Moderator]
+  getNodeUser(filter: UserInput): User
+  getNodeUsers(filter: UserInput, options: Options, sort: [UserSort!]): [User]
+  getNodeGroup(filter: GroupInput): Group
+  getNodeGroups(filter: GroupInput, options: Options, sort: [GroupSort!]): [Group]
+  getNodeModerator(filter: ModeratorInput): Moderator
+  getNodeModerators(filter: ModeratorInput, options: Options, sort: [ModeratorSort!]): [Moderator]
 }
 
 type Mutation {
-  createUser(input: UserCreateInput!): User
-  updateUser(input: UserUpdateInput!): User
-  deleteUser(userId: ID!): Boolean
-  createGroup(input: GroupCreateInput!): Group
-  updateGroup(input: GroupUpdateInput!): Group
-  deleteGroup(_id: ID!): Boolean
-  createModerator(input: ModeratorCreateInput!): Moderator
-  updateModerator(input: ModeratorUpdateInput!): Moderator
-  deleteModerator(moderatorId: ID!): Boolean
-  connectModeratorToGroupThroughGroupEdge(from_id: ID!, to_id: ID!): GroupEdge
-  deleteGroupEdgeConnectionFromModeratorToGroup(from_id: ID!, to_id: ID!): Boolean
+  userGroupMutation_createNodeUser(input: UserCreateInput!): User
+  userGroupMutation_updateNodeUser(input: UserUpdateInput!): User
+  userGroupMutation_deleteNodeUser(userId: ID!): Boolean
+  userGroupMutation_createNodeGroup(input: GroupCreateInput!): Group
+  userGroupMutation_updateNodeGroup(input: GroupUpdateInput!): Group
+  userGroupMutation_deleteNodeGroup(_id: ID!): Boolean
+  userGroupMutation_createNodeModerator(input: ModeratorCreateInput!): Moderator
+  userGroupMutation_updateNodeModerator(input: ModeratorUpdateInput!): Moderator
+  userGroupMutation_deleteNodeModerator(moderatorId: ID!): Boolean
+  userGroupMutation_connectNodeModeratorToNodeGroupEdgeGroupEdge(from_id: ID!, to_id: ID!): GroupEdge
+  userGroupMutation_deleteEdgeGroupEdgeFromModeratorToGroup(from_id: ID!, to_id: ID!): Boolean
 }
 
 schema {

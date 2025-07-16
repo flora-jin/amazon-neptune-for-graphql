@@ -1,0 +1,8 @@
+{
+    "name": "filter",
+    "description": "",
+    "graphql": "query MyQuery {\n integrationTestQuery_getNodeAirport(filter: {code: \"SEA\"}) {\n city \n }\n}",
+    "result":{
+        "city": "Seattle"
+    }
+}

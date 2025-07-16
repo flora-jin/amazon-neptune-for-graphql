@@ -1,0 +1,8 @@
+{  
+    "name": "integrationTestQuery_getAirport",
+    "description": "Inference query from return type",
+    "graphql": "query MyQuery {\n integrationTestQuery_getAirport(code: \"SEA\") {\n city \n }\n}",
+    "result":{
+        "city": "Seattle"
+    }
+}

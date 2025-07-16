@@ -1,0 +1,13 @@
+{
+    "name": "Unit Test (Air Routes) with query and mutation prefixes",
+    "description":"Start from graphql schema with directives, using Air Routes unit test schema with query and mutation prefixes",
+    "argv":["--quiet", 
+            "--input-schema-file", "./test/TestCases/Case01/input/airportsPrefix.source.schema.graphql",
+            "--query-prefix", "integrationTestQuery_",
+            "--mutation-prefix", "integrationTestMutation_",
+            "--output-js-resolver-file", "./test/TestCases/Case01/output/output.jsresolver.graphql.js",
+            "--output-folder-path", "./test/TestCases/Case01/output",
+            "--output-no-lambda-zip"],
+    "host": "<AIR_ROUTES_DB_HOST>",
+    "port": "<AIR_ROUTES_DB_PORT>"
+}

@@ -31,6 +31,31 @@ test('should correctly generate mutation input types after outputting airport sc
     expect(actual).toBe(expected);
 });
 
+test('should correctly generate airport schema with query prefixes', async () => {
+    const actual = await inferGraphQLSchema('./src/test/airports-neptune-schema.json', { addMutations: true }, {
+        inputQueryPrefix: 'airportsQuery_'
+    });
+    const expected = await loadGraphQLSchema('./src/test/airports-mutations-query-prefix.graphql');
+    expect(actual).toBe(expected);
+});
+
+test('should correctly generate airport schema with mutation prefixes', async () => {
+    const actual = await inferGraphQLSchema('./src/test/airports-neptune-schema.json', { addMutations: true }, {
+        inputMutationPrefix: 'airportsMutation_'
+    });
+    const expected = await loadGraphQLSchema('./src/test/airports-mutations-mutation-prefix.graphql');
+    expect(actual).toBe(expected);
+});
+
+test('should correctly generate airport schema with both query and mutation prefixes', async () => {
+    const actual = await inferGraphQLSchema('./src/test/airports-neptune-schema.json', { addMutations: true }, {
+        inputQueryPrefix: 'airportsQueryTest_',
+        inputMutationPrefix: 'airportsMutationTest_'
+    });
+    const expected = await loadGraphQLSchema('./src/test/airports-mutations-with-prefixes.graphql');
+    expect(actual).toBe(expected);
+});
+
 test('should output dining by friends schema', async () => {
     const actual = await inferGraphQLSchema('./src/test/dining-neptune-schema.json');
     const expected = await loadGraphQLSchema('./src/test/dining.graphql');
@@ -68,9 +93,9 @@ test('should alias edge with same label as node', async () => {
     expect(actual).toBe(expected);
 });
 
-async function inferGraphQLSchema(neptuneSchemaFilePath, options = { addMutations: false }) {
+async function inferGraphQLSchema(neptuneSchemaFilePath, mutation = { addMutations: false }, options = {}) {
     let neptuneSchema = readFile(neptuneSchemaFilePath);
-    let inferredSchema = graphDBInferenceSchema(neptuneSchema, options.addMutations);
+    let inferredSchema = graphDBInferenceSchema(neptuneSchema, mutation.addMutations, options);
     return await sanitizeWhitespace(inferredSchema);
 }
 
