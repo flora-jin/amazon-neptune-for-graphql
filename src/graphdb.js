@@ -342,7 +342,7 @@ function graphDBInferenceSchema (graphdbSchema, addMutations) {
 
                 if (edge.properties.length > 0) {               
                     r += `\tconnect${fromCase}To${toCase}Through${edgeCase}(from_id: ID!, to_id: ID!, edge: ${edgeCase}Input!): ${edgeCase}\n`;
-                    r += `\tupdateEdge${edgeCase}From${fromCase}To${toCase}(from_id: ID!, to_id: ID!, edge: ${edgeCase}Input!): ${edgeCase}\n`;
+                    r += `\tupdate${edgeCase}ConnectionFrom${fromCase}To${toCase}(from_id: ID!, to_id: ID!, edge: ${edgeCase}Input!): ${edgeCase}\n`;
                 } else {
                     r += `\tconnect${fromCase}To${toCase}Through${edgeCase}(from_id: ID!, to_id: ID!): ${edgeCase}\n`;
                 }
