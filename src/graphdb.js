@@ -319,8 +319,8 @@ function graphDBInferenceSchema (graphdbSchema, addMutations) {
     r += `type Query {\n`;
     gdbs.nodeStructures.forEach(node => {
         let nodeCase = toPascalCase(cleanseLabel(node.label));
-        r += `\tgetNode${nodeCase}(filter: ${nodeCase}Input): ${nodeCase}\n`;
-        r += `\tgetNode${nodeCase}s(filter: ${nodeCase}Input, options: Options, sort: [${nodeCase}Sort!]): [${nodeCase}]\n`;
+        r += `\tget${nodeCase}(filter: ${nodeCase}Input): ${nodeCase}\n`;
+        r += `\tget${nodeCase}s(filter: ${nodeCase}Input, options: Options, sort: [${nodeCase}Sort!]): [${nodeCase}]\n`;
     });
     r += '}\n\n';
 
@@ -329,9 +329,9 @@ function graphDBInferenceSchema (graphdbSchema, addMutations) {
         r += `type Mutation {\n`;
         gdbs.nodeStructures.forEach(node => {
             let nodeCase = toPascalCase(cleanseLabel(node.label));
-            r += `\tcreateNode${nodeCase}(input: ${nodeCase}CreateInput!): ${nodeCase}\n`;
-            r += `\tupdateNode${nodeCase}(input: ${nodeCase}UpdateInput!): ${nodeCase}\n`;
-            r += `\tdeleteNode${nodeCase}(_id: ID!): Boolean\n`;
+            r += `\tcreate${nodeCase}(input: ${nodeCase}CreateInput!): ${nodeCase}\n`;
+            r += `\tupdate${nodeCase}(input: ${nodeCase}UpdateInput!): ${nodeCase}\n`;
+            r += `\tdelete${nodeCase}(_id: ID!): Boolean\n`;
         });    
 
         gdbs.edgeStructures.forEach(edge => {
@@ -341,12 +341,12 @@ function graphDBInferenceSchema (graphdbSchema, addMutations) {
                 let edgeCase = toPascalCase(cleanseLabel(edge.label));
 
                 if (edge.properties.length > 0) {               
-                    r += `\tconnectNode${fromCase}ToNode${toCase}Edge${edgeCase}(from_id: ID!, to_id: ID!, edge: ${edgeCase}Input!): ${edgeCase}\n`;
+                    r += `\tconnect${fromCase}To${toCase}Through${edgeCase}(from_id: ID!, to_id: ID!, edge: ${edgeCase}Input!): ${edgeCase}\n`;
                     r += `\tupdateEdge${edgeCase}From${fromCase}To${toCase}(from_id: ID!, to_id: ID!, edge: ${edgeCase}Input!): ${edgeCase}\n`;
                 } else {
-                    r += `\tconnectNode${fromCase}ToNode${toCase}Edge${edgeCase}(from_id: ID!, to_id: ID!): ${edgeCase}\n`;
+                    r += `\tconnect${fromCase}To${toCase}Through${edgeCase}(from_id: ID!, to_id: ID!): ${edgeCase}\n`;
                 }
-                r += `\tdeleteEdge${edgeCase}From${fromCase}To${toCase}(from_id: ID!, to_id: ID!): Boolean\n`;
+                r += `\tdelete${edgeCase}ConnectionFrom${fromCase}To${toCase}(from_id: ID!, to_id: ID!): Boolean\n`;
             });
         });
         r += '}\n\n';
