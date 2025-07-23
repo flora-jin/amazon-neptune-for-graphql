@@ -301,13 +301,13 @@ type Mutation {
 createAirport(input: AirportCreateInput!): Airport
 airportMutation_createAirport(input: AirportCreateInput!): Airport
 updateAirport(input: AirportUpdateInput!): Airport
-airportMutation_updateNodeAirport(input: AirportUpdateInput!): Airport
+airportMutation_updateAirport(input: AirportUpdateInput!): Airport
 connectCountryToAirportThroughContains(from_id: ID!, to_id: ID!): Contains
-airportMutation_connectNodeCountryToNodeAirportEdgeContains(from_id: ID!, to_id: ID!): Contains
+airportMutation_connectCountryToAirportThroughContains(from_id: ID!, to_id: ID!): Contains
 deleteContainsConnectionFromCountryToAirport(from_id: ID!, to_id: ID!): Boolean
-airportMutation_deleteEdgeContainsFromCountryToAirport(from_id: ID!, to_id: ID!): Boolean
+airportMutation_deleteContainsConnectionFromCountryToAirport(from_id: ID!, to_id: ID!): Boolean
 updateRouteConnectionFromAirportToAirport(from_id: ID!, to_id: ID!, edge: RouteInput!): Route
-airportMutation_updateEdgeRouteFromAirportToAirport(from_id: ID!, to_id: ID!, edge: RouteInput!): Route
+airportMutation_updateRouteConnectionFromAirportToAirport(from_id: ID!, to_id: ID!, edge: RouteInput!): Route
 createAirportCustom(input: AirportCreateInput!): Airport @graphQuery(statement: "CREATE (this:airport {$input}) RETURN this")
 }
 
